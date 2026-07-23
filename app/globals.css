@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nest-dark: #0f2b2b;
+  --color-nest-card: #113c3c;
+  --color-nest-accent: #14b8a6;
+  --color-nest-danger: #ef4444;
+}
