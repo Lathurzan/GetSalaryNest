@@ -26,20 +26,35 @@ export default function CategoryPicker({
             type="button"
             onClick={() => onChange(c._id)}
             className={cn(
-              "flex flex-col items-center gap-1.5 rounded-2xl border p-2.5 transition",
+              "group flex flex-col items-center gap-1.5 rounded-2xl border p-2.5 transition-all duration-300",
               active
-                ? "border-transparent ring-2 ring-offset-1"
-                : "border-neutral-200 hover:border-neutral-300 dark:border-white/10"
+                ? "-translate-y-0.5 border-transparent"
+                : "border-neutral-200 bg-white hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20"
             )}
-            style={active ? { backgroundColor: `${c.color}14`, boxShadow: `0 0 0 2px ${c.color}` } : {}}
+            style={
+              active
+                ? {
+                    backgroundColor: `${c.color}18`,
+                    boxShadow: `0 0 0 2px ${c.color}, 0 8px 20px -8px ${c.color}80`,
+                  }
+                : {}
+            }
           >
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-full"
-              style={{ backgroundColor: `${c.color}1f` }}
+              className="flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
+              style={{ backgroundColor: `${c.color}${active ? "33" : "1f"}` }}
             >
-              <Icon size={17} style={{ color: c.color }} />
+              <Icon size={17} style={{ color: c.color }} strokeWidth={active ? 2.3 : 1.9} />
             </div>
-            <span className="w-full truncate text-center text-[11px] leading-tight text-neutral-600 dark:text-neutral-300">
+            <span
+              className={cn(
+                "w-full truncate text-center text-[11px] leading-tight transition-colors",
+                active
+                  ? "font-semibold"
+                  : "text-neutral-600 dark:text-neutral-300"
+              )}
+              style={active ? { color: c.color } : {}}
+            >
               {c.name}
             </span>
           </button>

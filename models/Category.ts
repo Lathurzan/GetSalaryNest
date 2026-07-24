@@ -1,3 +1,4 @@
+import { min } from "date-fns/fp/min";
 import mongoose, { Schema, models, model } from "mongoose";
 
 const CategorySchema = new Schema(
@@ -9,6 +10,8 @@ const CategorySchema = new Schema(
     type:      { type: String, enum: ["expense", "savings"], default: "expense" },
     isDefault: { type: Boolean, default: false },
     archived:  { type: Boolean, default: false },
+    budget:    { type: Number, min: 0, default: 0 },   // pence, 0 = no budget 
+
   },
   { timestamps: true }
 );

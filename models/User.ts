@@ -14,6 +14,10 @@ const UserSchema = new Schema(
     currency:     { type: String, default: "GBP" },
     salaryDay:    { type: Number, min: 1, max: 31, default: 1 },
     onboarded:    { type: Boolean, default: false },
+
+    subscriptionId:  { type: String },
+    subscriptionStatus: { type: String },   // active | past_due | cancelled
+    billingProvider: { type: String, enum: ["stripe", "razorpay"] },
   },
   { timestamps: true }
 );

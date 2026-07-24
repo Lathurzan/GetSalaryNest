@@ -3,13 +3,20 @@
 import { useEffect, useState, useCallback } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import * as Icons from "lucide-react";
+import Link from "next/link";
 import ExpenseForm from "@/components/expenses/ExpenseForm";
+import ReceiptViewer from "@/components/expenses/ReceiptViewer";
 import MonthSwitcher from "@/components/shared/MonthSwitcher";
+import { usePlan } from "@/lib/hooks/usePlan";
 import { format } from "@/lib/money";
 import { monthKey } from "@/lib/dates";
 import type { Cat } from "@/components/expenses/CategoryPicker";
 
+const FREE_LIMIT = 50;
+
 export default function ExpensesPage() {
+  const { isPremium } = usePlan();
+
   const [month, setMonth] = useState(monthKey(new Date()));
   const [categories, setCategories] = useState<Cat[]>([]);
   const [items, setItems] = useState<any[]>([]);
@@ -17,6 +24,7 @@ export default function ExpensesPage() {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [editing, setEditing] = useState<any>(null);
+  const [viewing, setViewing] = useState<string | null>(null);
 
   const loadCategories = useCallback(async () => {
     const res = await fetch("/api/categories");
@@ -44,7 +52,7 @@ export default function ExpensesPage() {
   const total = items.reduce((s, i) => s + i.amount, 0);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-5 p-4 sm:p-6">
+    <div className="mx-auto max-w-3xl space-y-5 p-4 pb-24 sm:p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Expenses</h1>
         <MonthSwitcher month={month} onChange={setMonth} />
@@ -53,8 +61,24 @@ export default function ExpensesPage() {
       <div className="rounded-2xl bg-neutral-50 p-4 dark:bg-white/5">
         <p className="text-xs text-neutral-500">Total this month</p>
         <p className="mt-1 text-2xl font-semibold">{format(total)}</p>
-        <p className="mt-0.5 text-xs text-neutral-400">{items.length} transactions</p>
+        <p className="mt-0.5 text-xs text-neutral-400">
+          {items.length} transactions
+        </p>
       </div>
+
+      {/* free-tier counter */}
+      {!isPremium && (
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-2.5 text-xs dark:bg-white/5">
+          <span className="text-neutral-500">
+            {items.length} of {FREE_LIMIT} expenses this month
+          </span>
+          {items.length >= FREE_LIMIT * 0.8 && (
+            <Link href="/pricing" className="font-medium text-teal-600">
+              Upgrade
+            </Link>
+          )}
+        </div>
+      )}
 
       {/* category filter chips */}
       <div className="flex gap-2 overflow-x-auto pb-1">
@@ -105,15 +129,35 @@ export default function ExpensesPage() {
                   >
                     <Icon size={19} style={{ color: e.category.color }} />
                   </div>
+
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">{e.note || e.category.name}</p>
+                    <p className="truncate font-medium">
+                      {e.note || e.category.name}
+                    </p>
                     <p className="mt-0.5 text-xs text-neutral-400">
                       {new Date(e.date).toLocaleDateString("en-GB", {
-                        day: "2-digit", month: "short",
-                      })} · {e.category.name}
+                        day: "2-digit",
+                        month: "short",
+                      })}{" "}
+                      · {e.category.name}
                     </p>
                   </div>
-                  <span className="font-semibold tabular-nums">{format(e.amount)}</span>
+
+                  {e.receiptUrl && (
+                    <img
+                      src={e.receiptUrl}
+                      alt=""
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        setViewing(e.receiptUrl);
+                      }}
+                      className="h-9 w-9 shrink-0 rounded-lg object-cover"
+                    />
+                  )}
+
+                  <span className="font-semibold tabular-nums">
+                    {format(e.amount)}
+                  </span>
                 </button>
 
                 <button
@@ -145,6 +189,8 @@ export default function ExpensesPage() {
         categories={categories}
         editing={editing}
       />
+
+      <ReceiptViewer url={viewing} onClose={() => setViewing(null)} />
     </div>
   );
 }
