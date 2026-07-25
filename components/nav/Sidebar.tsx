@@ -62,7 +62,7 @@ export default function Sidebar() {
 
       {!isPremium && (
         <Link
-          href="/pricing"
+          href="/settings/billing"
           className="mb-3 rounded-2xl bg-gradient-to-br from-[#0f2b2b] to-[#113c3c] p-4 text-white"
         >
           <div className="flex items-center gap-1.5 text-xs font-medium text-teal-400">

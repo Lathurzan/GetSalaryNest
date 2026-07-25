@@ -38,16 +38,32 @@ export default function ExportButton({ month }: { month: string }) {
       <button
         onClick={download}
         disabled={busy}
-        className="flex items-center gap-2 rounded-xl border border-neutral-200 px-3.5 py-2 text-xs font-medium transition hover:bg-neutral-50 disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/5"
+        className="group relative flex items-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-br from-[#0f2b2b] to-[#164040] px-4 py-2.5 text-xs font-medium text-white shadow-[0_6px_20px_-8px_rgba(15,43,43,0.65)] ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-10px_rgba(15,43,43,0.8)] active:translate-y-0 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-[0_6px_20px_-8px_rgba(15,43,43,0.65)]"
       >
-        {busy ? (
-          <Loader2 size={14} className="animate-spin" />
-        ) : isPremium ? (
-          <Download size={14} />
-        ) : (
-          <Lock size={13} />
-        )}
-        {busy ? "Generating…" : "Export PDF"}
+        {/* gradient glow sweep */}
+        <span className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-teal-400/25 to-teal-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-disabled:opacity-0" />
+
+        <span className="relative flex items-center gap-2">
+          {busy ? (
+            <Loader2 size={14} className="animate-spin text-teal-400" />
+          ) : isPremium ? (
+            <Download
+              size={14}
+              className="text-teal-400 transition-transform duration-300 group-hover:-translate-y-0.5"
+            />
+          ) : (
+            <Lock size={13} className="text-amber-400" />
+          )}
+
+          {busy ? "Generating PDF…" : "Export PDF"}
+
+          {/* premium badge for free users */}
+          {!isPremium && !busy && (
+            <span className="rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-950">
+              Premium
+            </span>
+          )}
+        </span>
       </button>
 
       <UpgradePrompt
