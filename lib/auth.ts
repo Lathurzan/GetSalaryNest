@@ -36,6 +36,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           image: user.image,
+          emailVerified: user.emailVerified,
         };
       },
     }),
@@ -58,10 +59,16 @@ export const authOptions: NextAuthOptions = {
           email: user.email!.toLowerCase(),
           name: user.name,
           image: user.image,
+          emailVerified: true,      // Google already verified ownership
+          provider: "google",
         });
         await Category.insertMany(
           DEFAULT_CATEGORIES.map((c) => ({ ...c, userId: dbUser!._id, isDefault: true }))
         );
+      } else if (!dbUser.emailVerified) {
+        // existing account signing in via Google → trust Google's verification
+        dbUser.emailVerified = true;
+        await dbUser.save();
       }
 
       user.id = dbUser._id.toString();
@@ -73,10 +80,11 @@ export const authOptions: NextAuthOptions = {
 
       if (token.id) {
         await dbConnect();
-        const u = await User.findById(token.id).select("plan currency planExpiresAt");
+        const u = await User.findById(token.id).select("plan currency planExpiresAt emailVerified");
         if (u) {
           token.plan = u.plan;
           token.currency = u.currency;
+          token.emailVerified = u.emailVerified;
           token.isPremium =
             u.plan === "premium" &&
             (!u.planExpiresAt || u.planExpiresAt > new Date());
@@ -91,6 +99,7 @@ export const authOptions: NextAuthOptions = {
         session.user.plan = token.plan as "free" | "premium";
         session.user.currency = token.currency as string;
         session.user.isPremium = token.isPremium as boolean;
+        (session.user as any).emailVerified = token.emailVerified as boolean;
       }
       return session;
     },

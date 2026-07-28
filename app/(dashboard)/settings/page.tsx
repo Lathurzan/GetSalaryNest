@@ -14,8 +14,12 @@ import {
   Loader2,
   Trash2,
   AlertTriangle,
+  Star,
+  Bug,
   Settings as SettingsIcon,
 } from "lucide-react";
+import ReviewForm from "@/components/reviews/ReviewForm";
+import BugForm from "@/components/bugs/BugForm";
 
 const NAV_CARDS = [
   {
@@ -57,8 +61,11 @@ export default function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [bugOpen, setBugOpen] = useState(false);
+
   const username = session?.user?.name?.trim().split(" ")[0] ?? "";
-  const confirmPhrase = `${username}`;
+  const confirmPhrase = `${username}/ShiftFlow`;
 
   const openPortal = async () => {
     setBusy(true);
@@ -228,6 +235,35 @@ export default function SettingsPage() {
           />
         </Link>
 
+        {/* feedback */}
+        <div className="animate-fade-up delay-300 grid gap-3 sm:grid-cols-2">
+          <button
+            onClick={() => setReviewOpen(true)}
+            className="group flex items-center gap-3 rounded-2xl border border-neutral-200/90 bg-white/85 p-4 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.03]"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-400/15 ring-1 ring-amber-400/25">
+              <Star size={18} className="text-amber-500" fill="currentColor" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#0a1f1f] dark:text-white">Leave a review</p>
+              <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">Rate your experience</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setBugOpen(true)}
+            className="group flex items-center gap-3 rounded-2xl border border-neutral-200/90 bg-white/85 p-4 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.03]"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/12 ring-1 ring-red-500/20">
+              <Bug size={18} className="text-red-600 dark:text-red-400" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#0a1f1f] dark:text-white">Report a bug</p>
+              <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">Something not working?</p>
+            </div>
+          </button>
+        </div>
+
         {/* sign out */}
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
@@ -246,6 +282,10 @@ export default function SettingsPage() {
           Delete account
         </button>
       </div>
+
+      {/* feedback modals */}
+      <ReviewForm open={reviewOpen} onClose={() => setReviewOpen(false)} />
+      <BugForm open={bugOpen} onClose={() => setBugOpen(false)} />
 
       {/* delete confirmation modal */}
       {deleteModal && (

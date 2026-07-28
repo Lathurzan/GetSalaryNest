@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Check, PieChart, Receipt, PiggyBank, FileDown } from "lucide-react";
+import ReviewWall from "@/components/reviews/ReviewWall";
 
 const FEATURES = [
   {
@@ -92,37 +93,25 @@ export default function LandingPage() {
       </section>
 
       {/* preview card */}
-      <section className="relative mx-auto max-w-md px-6 pb-28">
+      <section className="relative mx-auto max-w-md px-6 pb-20">
         <div className="animate-fade-up delay-500 relative">
-          {/* glow */}
           <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-teal-400/20 via-transparent to-emerald-400/10 blur-2xl" />
 
-          {/* floating chips */}
           <div className="animate-float absolute -left-4 top-8 z-20 hidden rounded-2xl border border-white/60 bg-white/80 px-3.5 py-2.5 shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)] backdrop-blur-xl sm:block dark:border-white/10 dark:bg-neutral-900/80">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">
-              Rent
-            </p>
-            <p className="text-sm font-semibold text-[#0f2b2b] dark:text-white">
-              −£950.00
-            </p>
+            <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Rent</p>
+            <p className="text-sm font-semibold text-[#0f2b2b] dark:text-white">−£950.00</p>
           </div>
 
           <div className="animate-float-slow absolute -right-5 bottom-10 z-20 hidden rounded-2xl border border-white/60 bg-white/80 px-3.5 py-2.5 shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)] backdrop-blur-xl sm:block dark:border-white/10 dark:bg-neutral-900/80">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">
-              This month
-            </p>
-            <p className="text-sm font-semibold text-teal-600 dark:text-teal-400">
-              +£1,400
-            </p>
+            <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">This month</p>
+            <p className="text-sm font-semibold text-teal-600 dark:text-teal-400">+£1,400</p>
           </div>
 
-          {/* main card */}
           <div className="group relative h-56 overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-[#0f2b2b] via-[#113c3c] to-[#0a1f1f] p-7 shadow-[0_24px_70px_-20px_rgba(15,43,43,0.7)] ring-1 ring-white/10 transition-transform duration-500 hover:scale-[1.02]">
             <div
               className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
               style={{
-                background:
-                  "radial-gradient(circle at 70% 40%, #14b8a640 0%, transparent 62%)",
+                background: "radial-gradient(circle at 70% 40%, #14b8a640 0%, transparent 62%)",
               }}
             />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
@@ -132,16 +121,12 @@ export default function LandingPage() {
                 <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-white/50">
                   Monthly savings
                 </p>
-                <p className="mt-2.5 text-4xl font-semibold tracking-tight text-white">
-                  £1,400.00
-                </p>
+                <p className="mt-2.5 text-4xl font-semibold tracking-tight text-white">£1,400.00</p>
               </div>
 
               <div>
                 <div className="flex items-baseline justify-between">
-                  <p className="text-xs text-white/45">
-                    Goal £2,000 · 20% of income
-                  </p>
+                  <p className="text-xs text-white/45">Goal £2,000 · 20% of income</p>
                   <p className="text-xs font-semibold text-teal-400">70%</p>
                 </div>
                 <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/[0.08]">
@@ -154,7 +139,7 @@ export default function LandingPage() {
       </section>
 
       {/* features */}
-      <section className="mx-auto max-w-5xl px-6 pb-28">
+      <section className="mx-auto max-w-5xl px-6 pb-20 sm:pb-28">
         <div className="mb-14 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-[#0f2b2b] sm:text-4xl dark:text-white">
             Built for real budgets
@@ -165,17 +150,14 @@ export default function LandingPage() {
           {FEATURES.map(({ icon: Icon, title, body }, i) => (
             <div
               key={title}
-              className={`group animate-fade-up delay-${(i + 1) * 100} relative overflow-hidden rounded-3xl border border-neutral-200/70 bg-white/70 p-7 shadow-sm backdrop-blur-sm transition-all duration-400 hover:-translate-y-1.5 hover:border-teal-500/25 hover:shadow-[0_20px_50px_-20px_rgba(15,43,43,0.3)] dark:border-white/[0.07] dark:bg-white/[0.02] dark:hover:border-teal-400/20`}
+              className="group relative overflow-hidden rounded-3xl border border-neutral-200/70 bg-white/70 p-7 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-500/25 hover:shadow-[0_20px_50px_-20px_rgba(15,43,43,0.3)] dark:border-white/[0.07] dark:bg-white/[0.02] dark:hover:border-teal-400/20"
+              style={{ animationDelay: `${(i + 1) * 0.1}s` }}
             >
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-teal-500/0 to-teal-500/0 opacity-0 transition-opacity duration-500 group-hover:from-teal-500/[0.04] group-hover:to-transparent group-hover:opacity-100" />
 
               <div className="relative">
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500/15 to-emerald-500/5 ring-1 ring-teal-500/15 transition-all duration-400 group-hover:scale-110 group-hover:rotate-[-6deg] group-hover:ring-teal-500/30">
-                  <Icon
-                    size={21}
-                    className="text-teal-600 transition-colors duration-300 group-hover:text-teal-500 dark:text-teal-400"
-                    strokeWidth={1.9}
-                  />
+                  <Icon size={21} className="text-teal-600 transition-colors duration-300 group-hover:text-teal-500 dark:text-teal-400" strokeWidth={1.9} />
                 </div>
 
                 <h3 className="text-base font-semibold tracking-tight text-[#0f2b2b] dark:text-white">
@@ -190,20 +172,40 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* reviews */}
+      <section className="mx-auto max-w-5xl px-6 pb-20 sm:pb-28">
+        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+          {/* heading — centered on mobile, left on desktop */}
+          <div className="text-center lg:text-left">
+            <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/[0.08] px-3 py-1 text-xs font-medium text-amber-600">
+              Loved by savers
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-[#0a1f1f] sm:text-4xl dark:text-white">
+              What our users say
+            </h2>
+            <p className="mx-auto mt-3 max-w-sm text-neutral-500 lg:mx-0 dark:text-neutral-400">
+              Real reviews from people tracking their salary and savings with SalaryNest.
+            </p>
+          </div>
+
+          {/* scrolling wall */}
+          <ReviewWall />
+        </div>
+      </section>
+
       {/* cta */}
       <section className="mx-auto max-w-3xl px-6 pb-20">
-        <div className="animate-fade-up relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0f2b2b] via-[#113c3c] to-[#0a1f1f] p-10 text-center shadow-[0_30px_80px_-30px_rgba(15,43,43,0.8)] ring-1 ring-white/10 sm:p-14">
+        <div className="animate-fade-up relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0f2b2b] via-[#113c3c] to-[#0a1f1f] p-8 text-center shadow-[0_30px_80px_-30px_rgba(15,43,43,0.8)] ring-1 ring-white/10 sm:p-14">
           <div
             className="pointer-events-none absolute inset-0 opacity-60"
             style={{
-              background:
-                "radial-gradient(circle at 50% 0%, #14b8a638 0%, transparent 60%)",
+              background: "radial-gradient(circle at 50% 0%, #14b8a638 0%, transparent 60%)",
             }}
           />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
           <div className="relative">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl">
               Start tracking in 30 seconds
             </h2>
             <p className="mt-3 text-sm text-white/55 sm:text-base">
@@ -216,10 +218,7 @@ export default function LandingPage() {
                 "Your data stays yours",
                 "Cancel Premium anytime",
               ].map((t) => (
-                <li
-                  key={t}
-                  className="flex items-center gap-3 text-sm text-white/80"
-                >
+                <li key={t} className="flex items-center gap-3 text-sm text-white/80">
                   <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-500/20 ring-1 ring-teal-400/25">
                     <Check size={11} className="text-teal-400" strokeWidth={3} />
                   </span>
@@ -233,9 +232,7 @@ export default function LandingPage() {
               className="group mt-10 inline-flex items-center gap-2 rounded-2xl bg-white px-9 py-4 text-sm font-semibold text-[#0f2b2b] shadow-[0_8px_30px_-8px_rgba(255,255,255,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-12px_rgba(255,255,255,0.5)] active:translate-y-0"
             >
               Create free account
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
           </div>
         </div>

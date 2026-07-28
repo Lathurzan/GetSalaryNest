@@ -1,6 +1,8 @@
 import Sidebar from "@/components/nav/Sidebar";
 import BottomNav from "@/components/nav/BottomNav";
 import TopBar from "@/components/nav/TopBar";
+import VerifyBanner from "@/components/shared/VerifyBanner";
+
 
 export default function DashboardLayout({
   children,
@@ -15,6 +17,11 @@ export default function DashboardLayout({
         <main className="pb-24 lg:pb-8">{children}</main>
       </div>
       <BottomNav />
+      // inside the layout, above {children}:
+<main className="lg:pl-60">
+  <VerifyBanner />
+  {children}
+</main>
     </div>
   );
 }

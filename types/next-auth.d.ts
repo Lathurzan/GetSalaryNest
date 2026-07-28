@@ -27,3 +27,13 @@ declare module "next-auth/jwt" {
     isPremium?: boolean;
   }
 }
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      emailVerified?: boolean; // ← add
+      // ... existing
+    } & DefaultSession["user"];
+  }
+}

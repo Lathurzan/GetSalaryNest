@@ -18,6 +18,17 @@ const UserSchema = new Schema(
     subscriptionId:  { type: String },
     subscriptionStatus: { type: String },   // active | past_due | cancelled
     billingProvider: { type: String, enum: ["stripe", "razorpay"] },
+
+    // email verification
+    emailVerified: { type: Boolean, default: false },
+    provider: { type: String, enum: ["credentials", "google"], default: "credentials" },
+
+    // magic-link token (hashed)
+    verifyTokenHash: { type: String, select: false },
+    verifyTokenExpires: { type: Date, select: false },
+
+    // pending email change (verified before it becomes active)
+    pendingEmail: { type: String, lowercase: true, trim: true },
   },
   { timestamps: true }
 );

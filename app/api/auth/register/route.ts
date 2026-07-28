@@ -5,6 +5,8 @@ import { dbConnect } from "@/lib/db";
 import User from "@/models/User";
 import Category from "@/models/Category";
 import { DEFAULT_CATEGORIES } from "@/lib/seed";
+import { makeVerifyToken } from "@/lib/verify";
+import { sendVerificationEmail } from "@/lib/email";
 
 const schema = z.object({
   name: z.string().min(2).max(60),
@@ -42,6 +44,19 @@ export async function POST(req: Request) {
     await Category.insertMany(
       DEFAULT_CATEGORIES.map((c) => ({ ...c, userId: user._id, isDefault: true }))
     );
+
+    // send verification email — don't fail signup if it hiccups
+    try {
+      const { raw, hash, expires } = makeVerifyToken();
+      user.verifyTokenHash = hash;
+      user.verifyTokenExpires = expires;
+      await user.save();
+
+      const link = `${process.env.NEXTAUTH_URL}/verify?token=${raw}`;
+      await sendVerificationEmail(user.email, user.name, link);
+    } catch (e) {
+      console.error("Verification email failed:", e);
+    }
 
     return NextResponse.json({ id: user._id.toString() }, { status: 201 });
   } catch (e) {
